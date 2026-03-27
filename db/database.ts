@@ -55,10 +55,10 @@ export async function initDatabase() {
   // Fix URLs directly in case they were already broken
   try {
     await db.execAsync(`
-      UPDATE Movies SET posterUrl = 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1RMTgl0sZGlHtw.jpg' WHERE title LIKE '%Spider-Man%';
-      UPDATE Movies SET posterUrl = 'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg' WHERE title LIKE '%Avengers%';
-      UPDATE Movies SET posterUrl = 'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg' WHERE title LIKE '%Batman%';
-      UPDATE Movies SET posterUrl = 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2JGjjc9CW.jpg' WHERE title LIKE '%Dune%';
+      UPDATE Movies SET posterUrl = 'https://upload.wikimedia.org/wikipedia/en/0/00/Spider-Man_No_Way_Home_poster.jpg' WHERE title LIKE '%Spider-Man%';
+      UPDATE Movies SET posterUrl = 'https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg' WHERE title LIKE '%Avengers%';
+      UPDATE Movies SET posterUrl = 'https://upload.wikimedia.org/wikipedia/en/f/ff/The_Batman_%28film%29_poster.jpg' WHERE title LIKE '%Batman%';
+      UPDATE Movies SET posterUrl = 'https://upload.wikimedia.org/wikipedia/en/8/8e/Dune_Part_Two_poster.jpg' WHERE title LIKE '%Dune%';
     `);
   } catch(e) {}
   
@@ -74,10 +74,10 @@ async function insertDummyData(db: SQLite.SQLiteDatabase) {
   await db.runAsync(`INSERT INTO Users (username, password) VALUES (?, ?)`, ['admin', '123456']);
 
   // Use sequential inserts for dummy data to avoid issues.
-  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['Avengers: Endgame', 'The Avengers...', 'https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg', 181, 'Now Showing']);
-  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['Spider-Man: No Way Home', 'With Spider-Mans...', 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1RMTgl0sZGlHtw.jpg', 148, 'Now Showing']);
-  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['The Batman', 'When a sadistic serial...', 'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg', 176, 'Coming Soon']);
-  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['Dune: Part Two', 'Paul Atreides unites...', 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2JGjjc9CW.jpg', 166, 'Coming Soon']);
+  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['Avengers: Endgame', 'The Avengers...', 'https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg', 181, 'Now Showing']);
+  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['Spider-Man: No Way Home', 'With Spider-Mans...', 'https://upload.wikimedia.org/wikipedia/en/0/00/Spider-Man_No_Way_Home_poster.jpg', 148, 'Now Showing']);
+  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['The Batman', 'When a sadistic serial...', 'https://upload.wikimedia.org/wikipedia/en/f/ff/The_Batman_%28film%29_poster.jpg', 176, 'Coming Soon']);
+  await db.runAsync(`INSERT INTO Movies (title, description, posterUrl, duration, status) VALUES (?, ?, ?, ?, ?)`, ['Dune: Part Two', 'Paul Atreides unites...', 'https://upload.wikimedia.org/wikipedia/en/8/8e/Dune_Part_Two_poster.jpg', 166, 'Coming Soon']);
 
   await db.runAsync(`INSERT INTO Theaters (name, address) VALUES (?, ?)`, ['CGV Vincom', 'Vincom Center']);
   await db.runAsync(`INSERT INTO Theaters (name, address) VALUES (?, ?)`, ['Lotte Cinema', 'Lotte Mart']);

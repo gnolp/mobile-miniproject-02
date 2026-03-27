@@ -3,17 +3,31 @@ import { useEffect, useState } from 'react';
 import { getMoviesByStatus, Movie } from '../../db/dao';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { Dropdown } from 'react-native-element-dropdown';
+
+const filterData = [
+  { label: 'All Durations', value: 'all' },
+  { label: 'Under 160 mins', value: 'under_160' },
+  { label: '160 mins & Over', value: 'over_160' },
+];
 
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<'Now Showing' | 'Coming Soon'>('Now Showing');
   const [movies, setMovies] = useState<Movie[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [durationFilter, setDurationFilter] = useState('all');
 
   useEffect(() => {
     getMoviesByStatus(activeTab).then(setMovies);
   }, [activeTab]);
 
-  const filteredMovies = movies.filter(m => m.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  let filteredMovies = movies.filter(m => m.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  
+  if (durationFilter === 'under_160') {
+    filteredMovies = filteredMovies.filter(m => m.duration < 160);
+  } else if (durationFilter === 'over_160') {
+    filteredMovies = filteredMovies.filter(m => m.duration >= 160);
+  }
 
   const renderMovie = ({ item }: { item: Movie }) => (
     <TouchableOpacity style={styles.movieCard} onPress={() => router.push(`/movie/${item.id}`)}>
@@ -25,19 +39,34 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search movies by title..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
+      <View style={styles.searchRow}>
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Ionicons name="close-circle" size={20} color="#888" />
+            </TouchableOpacity>
+          )}
+        </View>
+        
+        <Dropdown
+          style={styles.dropdown}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          data={filterData}
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder="Filter"
+          value={durationFilter}
+          onChange={item => setDurationFilter(item.value)}
         />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={() => setSearchQuery('')}>
-            <Ionicons name="close-circle" size={20} color="#888" />
-          </TouchableOpacity>
-        )}
       </View>
 
       <View style={styles.tabContainer}>
@@ -66,10 +95,14 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
-  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', margin: 10, borderRadius: 8, paddingHorizontal: 10, elevation: 2 },
+  searchRow: { flexDirection: 'row', padding: 10, paddingBottom: 0 },
+  searchContainer: { flex: 2, flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 8, paddingHorizontal: 10, elevation: 2, marginRight: 10 },
   searchIcon: { marginRight: 10 },
-  searchInput: { flex: 1, height: 40 },
-  tabContainer: { flexDirection: 'row', backgroundColor: '#fff', elevation: 2 },
+  searchInput: { flex: 1, height: 45 },
+  dropdown: { flex: 1, backgroundColor: '#fff', height: 45, borderRadius: 8, paddingHorizontal: 10, elevation: 2 },
+  placeholderStyle: { fontSize: 14, color: '#888' },
+  selectedTextStyle: { fontSize: 14, color: '#333' },
+  tabContainer: { flexDirection: 'row', backgroundColor: '#fff', elevation: 2, marginTop: 10 },
   tab: { flex: 1, padding: 15, alignItems: 'center', borderBottomWidth: 2, borderBottomColor: 'transparent' },
   activeTab: { borderBottomColor: '#e91e63' },
   tabText: { fontSize: 16, fontWeight: 'bold', color: '#666' },
