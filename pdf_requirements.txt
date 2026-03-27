@@ -1,0 +1,33 @@
+Đề  bài:  Ứng  dụng  đặt  vé  xem  phim  (Movie  
+Ticket
+ 
+App)
+ 
+Xây  dựng  ứng  dụng  Android  cho  phép  người  dùng:  
+●
+ 
+đăng  nhập  
+●
+ 
+xem  danh  sách  phim  
+●
+ 
+xem  rạp  chiếu  
+●
+ 
+xem  lịch  chiếu  
+●
+ 
+đặt  vé  xem  phim  (phải  đăng  nhập)  
+Dữ  liệu  được  lưu  bằng  Room  Database ,  trạng  thái  đăng  nhập  lưu  bằng  SharedPreferences .  
+Có  5  bảng :  Users,  Movies,  Theaters,  Showtimes,  Tickets  
+Trong  đó  các  mối  quan  hệ  có  thể  như  sau:  
+ 
+Có  thể  thêm  cứng  1  số  dữ  liệu  cho  các  bảng.  
+Luồng  dữ  liệu  trong  hệ  thống:  
+Start  App     │     ▼  Home  Screen     │      |----  Login      |     ├ ──  Xem  danh  sách  Movies     │     ├ ──  Xem  Theaters     │     └──  Xem  Showtimes             │  
+
+           ▼         Chọn  Showtime             │             ▼        Đặt  vé  (Book  Ticket)             │             ▼     Kiểm  tra  đăng  nhập  ?          │             │          │  No      │  Yes          ▼         ▼     Login       Screen   Chọn  Seat          │            │          └── ►  Login  thành  công                   │                   ▼                Chọn  Seat                   │                   ▼                Tạo  Ticket                   │                   ▼            Hiển  thị  vé  đã  đặt   
+ 
+ 
+ 
